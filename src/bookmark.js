@@ -96,7 +96,7 @@
     styleEl.sheet.insertRule('.eb-tips {position: fixed; top: 0; z-index: 99999999; background-color: white; opacity: 1; padding: 10px; width: 420px; font-size: 16px;}')
     styleEl.sheet.insertRule('.eb-left {left: 0;}')
     styleEl.sheet.insertRule('.eb-right {right: 0;}')
-    styleEl.sheet.insertRule('.eb-tips, .eb-tips label, .eb-tips input, .eb-tips textarea, .eb-tips span, .eb-choice ul li {margin: 0; font-size: 1em; line-height: 1.5em; color: black; font-family: CenturyGothic, Helvetica, Tahoma, Arial, sans-serif; font: CenturyGothic, Helvetica, Tahoma, Arial, sans-serif;-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; text-transform: none; letter-spacing: normal; background-color: white;}')
+    styleEl.sheet.insertRule('.eb-tips, .eb-tips label, .eb-tips input, .eb-tips textarea, .eb-tips span, .eb-choice ul li, .eb-tips pre {margin: 0; font-size: 1em; line-height: 1.5em; color: black; font-family: CenturyGothic, Helvetica, Tahoma, Arial, sans-serif; font: CenturyGothic, Helvetica, Tahoma, Arial, sans-serif;-webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; text-transform: none; letter-spacing: normal; background-color: white;}')
     styleEl.sheet.insertRule('.eb-tips label, .eb-tips input, .eb-tips textarea, .eb-tips span {padding: 0; display: inline-block; vertical-align: top;}')
     styleEl.sheet.insertRule('.eb-tips input, .eb-tips label, .eb-tips span {min-height: 1.5em; height: 1.5em;}')
     styleEl.sheet.insertRule('.eb-tips span {font-weight: normal; cursor: pointer; margin-left: 5px; visibility: hidden}')
@@ -113,6 +113,7 @@
     styleEl.sheet.insertRule('.eb-choice ul {padding: 0; margin: 0;}')
     styleEl.sheet.insertRule('.eb-choice ul li {list-style-type:none; font-weight: normal; cursor: pointer;}')
     styleEl.sheet.insertRule('.eb-tips span:hover, .eb-tips .eb-move:hover, .eb-tips .eb-close:hover, .eb-choice ul li:hover {color: green;}')
+    styleEl.sheet.insertRule('.eb-tips pre {overflow: auto;}')
 
     const divTips = document.createElement('div')
     divTips.className = 'eb-tips eb-right eb-ignore'
@@ -122,7 +123,7 @@
 <label class="eb-ignore" for="eb-title-show">Title:</label><input class="eb-ignore" type="text" readonly id="eb-title-show" value=""/><span class="eb-ignore" data-id="eb-title">x</span><br>
 <label class="eb-ignore" for="eb-price-show">Price:</label><input class="eb-ignore" type="text" readonly id="eb-price-show" value=""/><span class="eb-ignore" data-id="eb-price">x</span><br>
 <label class="eb-ignore" for="eb-description-show">Descr:</label><textarea class="eb-ignore" readonly id="eb-description-show"/></textarea><span class="eb-ignore" data-id="eb-description">x</span><br>
-<pre class="eb-ignore" style="overflow: auto"></pre>`
+<pre class="eb-ignore"></pre>`
     divTips.querySelectorAll('span').forEach(v => {
         v.onclick = _ => {
             const dataId = v.getAttribute('data-id')
@@ -200,7 +201,12 @@
         src = image.getAttribute('content')
     } else {
         let images = []
-        document.body.querySelectorAll('img').forEach(v => {
+        let body = document.body
+        const main = document.body.querySelector('main')
+        if (main) {
+            body = main
+        }
+        body.querySelectorAll('img').forEach(v => {
             const size = Math.floor(v.width * v.height / 10000)
             if (size) {
                 images.push({element: v, size: size})
