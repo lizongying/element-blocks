@@ -181,8 +181,12 @@
                 console.log('xpath err', dataId, document.location.origin)
             }
 
-            const value = element.textContent.trim()
+            let value = element.textContent.trim()
             if (value) {
+                const index = value.indexOf('$')
+                if (dataId === 'eb-price' && index > 0) {
+                    value = value.slice(index)
+                }
                 res[dataId] = value
                 divTips.querySelector('pre').innerHTML = JSON.stringify(res, null, '\t')
                 console.log('res', res)
@@ -244,6 +248,7 @@
     } else {
         const xpath = localStorage.getItem('eb-title')
         if (xpath) {
+            res['eb-title-xpath'] = xpath
             titleValue = getElementFromXpath(xpath)
             if (!titleValue) {
                 console.log('xpath err', 'eb-title', document.location.origin)
@@ -265,6 +270,7 @@
     } else {
         const xpath = localStorage.getItem('eb-description')
         if (xpath) {
+            res['eb-description-xpath'] = xpath
             descriptionValue = getElementFromXpath(xpath)
             if (!descriptionValue) {
                 console.log('xpath err', 'eb-description', document.location.origin)
@@ -293,9 +299,15 @@
     } else {
         const xpath = localStorage.getItem('eb-price')
         if (xpath) {
+            res['eb-price-xpath'] = xpath
             priceValue = getElementFromXpath(xpath)
             if (!priceValue) {
                 console.log('xpath err', 'eb-price', document.location.origin)
+            } else {
+                const index = priceValue.indexOf('$')
+                if (index > 0) {
+                    priceValue = priceValue.slice(index)
+                }
             }
         }
     }
