@@ -183,7 +183,13 @@
 
             let value = element.textContent.trim()
             if (value) {
-                const index = value.indexOf('$')
+                let index = value.indexOf('$')
+                if (index < 0) {
+                    index = value.indexOf('£')
+                }
+                if (index < 0) {
+                    index = value.indexOf('€')
+                }
                 if (dataId === 'eb-price' && index > 0) {
                     value = value.slice(index)
                 }
@@ -304,7 +310,13 @@
             if (!priceValue) {
                 console.log('xpath err', 'eb-price', document.location.origin)
             } else {
-                const index = priceValue.indexOf('$')
+                let index = priceValue.indexOf('$')
+                if (index < 0) {
+                    index = value.indexOf('£')
+                }
+                if (index < 0) {
+                    index = value.indexOf('€')
+                }
                 if (index > 0) {
                     priceValue = priceValue.slice(index)
                 }
@@ -313,6 +325,8 @@
     }
     if (priceValue) {
         priceValue = priceValue.replace('USD', '$')
+        priceValue = priceValue.replace('GBP', '£')
+        priceValue = priceValue.replace('EUR', '€')
         divTips.querySelector('#eb-price-show').value = priceValue
         divTips.querySelector('span[data-id="eb-price"]').style.visibility = 'visible'
         res['eb-price'] = priceValue
